@@ -13,6 +13,19 @@ using namespace std;
 // -----
 // Fills a 3x5 Matrix with a value and checks
 // that Matrix_at returns that value for each element.
+
+//test initialization at edge cases, test that values are initialized
+
+//test print with many different widths and sizes (just 1 column, just 1 row)
+
+//test width with edge case and non edge case
+//test height with edge case and non edge case
+
+//test Matrix_row and column fxns with the edge case and non edge case
+
+//test Matrix_ate getting the border values, test central values
+
+
 TEST(test_fill_basic) {
   Matrix *mat = new Matrix; // create a Matrix in dynamic memory
 
@@ -20,6 +33,7 @@ TEST(test_fill_basic) {
   const int height = 5;
   const int value = 42;
   Matrix_init(mat, 3, 5);
+  //TODO: add more init tests here
   Matrix_fill(mat, value);
 
   for(int r = 0; r < height; ++r){
@@ -27,9 +41,17 @@ TEST(test_fill_basic) {
       ASSERT_EQUAL(*Matrix_at(mat, r, c), value);
     }
   }
-
   delete mat; // delete the Matrix
 }
+
+//Test fill, checking the corners
+
+//Test fill border, check that border is filled and not border parts are not filled
+
+//Test max where max is in different spots in data
+//test max where there is no maximum value
+
+//
 
 // ADD YOUR TESTS HERE
 // You are encouraged to use any functions from Matrix_test_helpers.h as needed.
