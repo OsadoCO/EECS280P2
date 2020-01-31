@@ -2,8 +2,7 @@
 
 #include <cassert>
 #include "Matrix.h"
-#include <iostream>
-using namespace std;
+
 
 // REQUIRES: mat points to a Matrix
 //           0 < width && width <= MAX_MATRIX_WIDTH
@@ -28,12 +27,12 @@ void Matrix_init(Matrix* mat, int width, int height) {
 //           by a newline. This means there will be an "extra" space at
 //           the end of each line.
 void Matrix_print(const Matrix* mat, std::ostream& os) {
-    cout << mat->width << " " << mat->height << "\n";
+    os << mat->width << " " << mat->height << "\n";
     for (int row = 0; row < (Matrix_height(mat)); row++) {
         for (int col = 0; col < Matrix_width(mat); col++) {
-            cout << *Matrix_at(mat, row, col) << " ";
+            os << *Matrix_at(mat, row, col) << " ";
         }
-        cout << "\n";
+        os << "\n";
     }
 }
 
