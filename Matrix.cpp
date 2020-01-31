@@ -127,7 +127,6 @@ void Matrix_fill(Matrix* mat, int value) {
 //           row or the first/last column.
 void Matrix_fill_border(Matrix* mat, int value) {
     
-    
     for(int i = 0; i < mat->height; i++) {
         //at row 0 and row 1, all columns are set to value
         if (i == 0 || i == mat->height - 1) {
