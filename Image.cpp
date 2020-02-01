@@ -10,7 +10,12 @@
 // EFFECTS:  Initializes the Image with the given width and height.
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image* img, int width, int height) {
-  assert(false); // TODO Replace with your implementation!
+    
+    assert(0 < width && width <= MAX_MATRIX_WIDTH);
+    assert(0 < height && height <= MAX_MATRIX_HEIGHT);
+    
+    img->width = width;
+    img->height = height;
 }
 
 // REQUIRES: img points to an Image
@@ -22,6 +27,8 @@ void Image_init(Image* img, int width, int height) {
 // NOTE:     See the project spec for a discussion of PPM format.
 // NOTE:     Do NOT use new or delete here.
 void Image_init(Image* img, std::istream& is) {
+    
+    
   assert(false); // TODO Replace with your implementation!
 }
 
@@ -45,13 +52,15 @@ void Image_print(const Image* img, std::ostream& os) {
 // REQUIRES: img points to a valid Image
 // EFFECTS:  Returns the width of the Image.
 int Image_width(const Image* img) {
-  assert(false); // TODO Replace with your implementation!
+    
+    return img->width;
 }
 
 // REQUIRES: img points to a valid Image
 // EFFECTS:  Returns the height of the Image.
 int Image_height(const Image* img) {
-  assert(false); // TODO Replace with your implementation!
+  
+    return img->height;
 }
 
 // REQUIRES: img points to a valid Image
@@ -59,6 +68,11 @@ int Image_height(const Image* img) {
 //           0 <= column && column < Image_width(img)
 // EFFECTS:  Returns the pixel in the Image at the given row and column.
 Pixel Image_get_pixel(const Image* img, int row, int column) {
+    
+    assert(0 <= row && row < Image_height(img));
+    assert(0 <= column && column < Image_width(img));
+    
+    
   assert(false); // TODO Replace with your implementation!
 }
 
