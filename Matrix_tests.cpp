@@ -132,6 +132,7 @@ TEST(test_max){
     ASSERT_EQUAL(Matrix_max(mat), -1);
     *Matrix_at(mat, 1, 6) = 0;
     ASSERT_EQUAL(Matrix_max(mat), 0);
+    delete mat;
 }
 
 TEST(col_of_min_in_row) {
@@ -168,7 +169,7 @@ TEST(min_in_row) {
     ASSERT_EQUAL(Matrix_min_value_in_row(mat, 4, 0, 3), -10);
     *Matrix_at(mat, 4, 2) = -77;
     ASSERT_EQUAL(Matrix_min_value_in_row(mat, 4, 0, 2), -10);
-    
+    delete mat;
 }
 
 
