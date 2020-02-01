@@ -98,7 +98,6 @@ int* Matrix_at(Matrix* mat, int row, int column) {
     // returns pointer
     
     int index = (Matrix_width(mat) * row) + column;
-    
     int *ptr = (mat->data + index);
     return ptr;
 }
@@ -113,8 +112,9 @@ const int* Matrix_at(const Matrix* mat, int row, int column) {
     
     assert(0 <= row && row < Matrix_height(mat));
     assert(0 <= column && column < Matrix_width(mat));
-    //TODO: Adjust with pointer arithmetic
-    int const * ptr = &(mat->data[(Matrix_width(mat) * row) + column]);
+   
+    int index = (Matrix_width(mat) * row) + column;
+    int const *ptr = (mat->data + index);
     return ptr;
 }
 
