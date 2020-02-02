@@ -33,7 +33,6 @@ TEST(test_fill_basic) {
     const int height = 5;
     const int value = 42;
     Matrix_init(mat, 3, 5);
-    //TODO: add more init tests here
     Matrix_fill(mat, value);
     
     for(int r = 0; r < height; ++r){
@@ -43,6 +42,35 @@ TEST(test_fill_basic) {
     }
     delete mat; // delete the Matrix
 }
+
+TEST(test_print) {
+    //write the test
+}
+
+TEST(test_init) {
+    Matrix *mat = new Matrix; // create a Matrix in dynamic memory
+    const int width = 1;
+    const int height = 1;
+    Matrix_init(mat, width, height);
+    ASSERT_EQUAL(Matrix_height(mat), 1);
+    ASSERT_EQUAL(Matrix_width(mat), 1);
+    delete mat;
+    
+    Matrix *mat1 = new Matrix; // create a Matrix in dynamic memory
+    const int width1 = 5;
+    const int height1 = 22;
+    Matrix_init(mat1, width1, height1);
+    ASSERT_EQUAL(Matrix_height(mat1), 22);
+    ASSERT_EQUAL(Matrix_width(mat1), 5);
+    delete mat1;
+    
+    Matrix *mat2 = new Matrix; // create a Matrix in dynamic memory
+    Matrix_init(mat2, MAX_MATRIX_WIDTH, MAX_MATRIX_HEIGHT);
+    ASSERT_EQUAL(Matrix_height(mat2), MAX_MATRIX_HEIGHT);
+    ASSERT_EQUAL(Matrix_width(mat2), MAX_MATRIX_WIDTH);
+    delete mat2;
+}
+
 
 //Test fill, checking the corners
 TEST(test_fill){
@@ -66,7 +94,7 @@ TEST(test_fill){
 }
 
 //Test fill border, check that border is filled and not border parts are not filled
-TEST(test_fill_border){
+TEST(test_fill_border) {
     
     Matrix *mat = new Matrix;
     const int width = 3;
@@ -132,6 +160,11 @@ TEST(test_max){
     ASSERT_EQUAL(Matrix_max(mat), -1);
     *Matrix_at(mat, 1, 6) = 0;
     ASSERT_EQUAL(Matrix_max(mat), 0);
+    *Matrix_at(mat,0,0) = 9;
+    ASSERT_EQUAL(Matrix_max(mat), 9);
+    *Matrix_at(mat,(Matrix_height(mat) - 1),(Matrix_width(mat) - 1)) = 100;
+    ASSERT_EQUAL(Matrix_max(mat), 100);
+    ASSERT_EQUAL(*Matrix_at(mat,(Matrix_height(mat) - 1),(Matrix_width(mat) - 1)),100);
     delete mat;
 }
 
@@ -140,6 +173,7 @@ TEST(col_of_min_in_row) {
     const int value = 9;
     Matrix_init(mat, 9, 7);
     Matrix_fill(mat, value);
+    ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 5, 0, 9), 0);
     *Matrix_at(mat, 5, 4) = 10;
     ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 5, 4, 8), 5);
     *Matrix_at(mat, 5, 6) = 0;
@@ -172,8 +206,53 @@ TEST(min_in_row) {
     delete mat;
 }
 
+TEST(one_row) {
+    Matrix *mat = new Matrix;
+    Matrix_init(mat, 1, 1);
+    Matrix_fill(mat, -81);
+    ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 0, 0, 1), 0);
+    ASSERT_EQUAL(Matrix_min_value_in_row(mat, 0, 0, 1), -81);
+    *Matrix_at(mat, 0, 0) = -82;
+    ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 0, 0, 1), 0);
+    ASSERT_EQUAL(Matrix_min_value_in_row(mat, 0, 0, 1), -82);
+    delete mat;
+}
 
-//
+TEST(Matrix_at_tests) {
+    Matrix *mat = new Matrix;
+    Matrix_init(mat, 1, 1);
+    int *ptr = Matrix_at(mat, 0, 0);
+    ASSERT_EQUAL(ptr, mat->data);
+    
+    Matrix_init(mat, 3, 2);
+    ptr = Matrix_at(mat, 1, 2);
+    ASSERT_EQUAL(ptr, mat->data + 5);
+    
+    Matrix_init(mat, 4, 4);
+    ptr = Matrix_at(mat, 2, 1);
+    ASSERT_EQUAL(ptr, mat->data + 9);
+    delete mat;
+}
+
+TEST(Matrix_at_const) {
+    
+    Matrix *mat = new Matrix;
+    Matrix_init(mat, 1, 1);
+    const Matrix *mat2 = mat;
+    const int *ptr = mat2->data;
+    ASSERT_EQUAL(Matrix_at(mat2,0,0),ptr);
+    ASSERT_EQUAL(*Matrix_at(mat2,0,0),
+                 *ptr);
+    delete mat;
+    
+    Matrix *mat4 = new Matrix;
+    Matrix_init(mat4,4,3);
+    const Matrix *mat3 = mat4;
+    ptr = mat3->data + 11;
+    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,Matrix_width(mat3) - 1),ptr);
+    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,Matrix_width(mat3) - 1),ptr);
+    delete mat4;
+}
 
 // ADD YOUR TESTS HERE
 // You are encouraged to use any functions from Matrix_test_helpers.h as needed.
