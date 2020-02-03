@@ -118,18 +118,16 @@ TEST(test_fill_border) {
     delete mat;
     
     Matrix *mat1 = new Matrix;
-    const int width1 = 0;
-    const int height1 = 0;
     const int value1 = 9;
-    Matrix_init(mat1, 3, 4);
+    Matrix_init(mat1, width, height);
     Matrix_fill(mat1, value1);
     Matrix_fill_border(mat1, 1000);
     
-    for (int i = 0; i < height1; i++) {
-        for (int j = 0; j < width1; j++) {
-            if (i == 0 || i == height1 - 1) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i == 0 || i == height - 1) {
                 ASSERT_EQUAL(*Matrix_at(mat1, i, j), 1000);
-            } else if (j == 0 || j == width1 - 1) {
+            } else if (j == 0 || j == width - 1) {
                 ASSERT_EQUAL(*Matrix_at(mat1, i, j), 1000);
             } else {
                 ASSERT_NOT_EQUAL(*Matrix_at(mat1, i, j), 1000);
@@ -143,9 +141,11 @@ TEST(test_fill_border) {
 //Test max where max is in different spots in data
 TEST(test_max){
     Matrix *mat = new Matrix;
+    const int width = 7;
+    const int height = 6;
     const int value = 5;
     const int value1 = -5;
-    Matrix_init(mat, 7, 6);
+    Matrix_init(mat, width, height);
     Matrix_fill(mat, value);
     ASSERT_EQUAL(Matrix_max(mat), 5);
     Matrix_fill_border(mat, 10);
@@ -170,8 +170,10 @@ TEST(test_max){
 
 TEST(col_of_min_in_row) {
     Matrix *mat = new Matrix;
+    const int width = 9;
+    const int height = 7;
     const int value = 9;
-    Matrix_init(mat, 9, 7);
+    Matrix_init(mat, width, height);
     Matrix_fill(mat, value);
     ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 5, 0, 9), 0);
     *Matrix_at(mat, 5, 4) = 10;
@@ -189,8 +191,10 @@ TEST(col_of_min_in_row) {
 
 TEST(min_in_row) {
     Matrix *mat = new Matrix;
+    const int width = 5;
+    const int height = 9;
     const int value = 9;
-    Matrix_init(mat, 5, 9);
+    Matrix_init(mat, width, height);
     Matrix_fill(mat, value);
     *Matrix_at(mat, 5, 4) = 10;
     ASSERT_EQUAL(Matrix_min_value_in_row(mat, 5, 0, 4), 9);
@@ -208,7 +212,9 @@ TEST(min_in_row) {
 
 TEST(one_row) {
     Matrix *mat = new Matrix;
-    Matrix_init(mat, 1, 1);
+    const int width = 1;
+    const int height = 1;
+    Matrix_init(mat, width, height);
     Matrix_fill(mat, -81);
     ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 0, 0, 1), 0);
     ASSERT_EQUAL(Matrix_min_value_in_row(mat, 0, 0, 1), -81);
@@ -220,15 +226,21 @@ TEST(one_row) {
 
 TEST(Matrix_at_tests) {
     Matrix *mat = new Matrix;
-    Matrix_init(mat, 1, 1);
+    const int width = 1;
+    const int height = 1;
+    Matrix_init(mat, width, height);
     int *ptr = Matrix_at(mat, 0, 0);
     ASSERT_EQUAL(ptr, mat->data);
     
-    Matrix_init(mat, 3, 2);
+    const int width1 = 3;
+    const int height1 = 2;
+    Matrix_init(mat, width1, height1);
     ptr = Matrix_at(mat, 1, 2);
     ASSERT_EQUAL(ptr, mat->data + 5);
     
-    Matrix_init(mat, 4, 4);
+    const int width2 = 4;
+    const int height2 = 4;
+    Matrix_init(mat, width2, height2);
     ptr = Matrix_at(mat, 2, 1);
     ASSERT_EQUAL(ptr, mat->data + 9);
     delete mat;
@@ -237,7 +249,9 @@ TEST(Matrix_at_tests) {
 TEST(Matrix_at_const) {
     
     Matrix *mat = new Matrix;
-    Matrix_init(mat, 1, 1);
+    const int width = 1;
+    const int height = 1;
+    Matrix_init(mat, width, height);
     const Matrix *mat2 = mat;
     const int *ptr = mat2->data;
     ASSERT_EQUAL(Matrix_at(mat2,0,0),ptr);
@@ -245,8 +259,10 @@ TEST(Matrix_at_const) {
                  *ptr);
     delete mat;
     
+    const int width1 = 4;
+    const int height1 = 3;
     Matrix *mat4 = new Matrix;
-    Matrix_init(mat4,4,3);
+    Matrix_init(mat4, width1, height1);
     const Matrix *mat3 = mat4;
     ptr = mat3->data + 11;
     ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,Matrix_width(mat3) - 1),ptr);
