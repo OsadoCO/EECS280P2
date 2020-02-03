@@ -21,12 +21,15 @@ using namespace std;
 TEST(test_print_basic) {
     Image *img = new Image; // create an Image in dynamic memory
     
+    int width = 2;
+    int height = 2;
+    
     const Pixel red = {255, 0, 0};
     const Pixel green = {0, 255, 0};
     const Pixel blue = {0, 0, 255};
     const Pixel white = {255, 255, 255};
     
-    Image_init(img, 2, 2);
+    Image_init(img, width, height);
     Image_set_pixel(img, 0, 0, red);
     Image_set_pixel(img, 0, 1, green);
     Image_set_pixel(img, 1, 0, blue);
@@ -48,7 +51,11 @@ TEST(test_print_basic) {
 
 TEST(Image_init) {
     Image *img = new Image; // create an Image in dynamic memory
-    Image_init(img, 1, 1);
+    
+    int width = 1;
+    int height = 1;
+    
+    Image_init(img, width, height);
     ASSERT_EQUAL(Image_height(img), 1);
     ASSERT_EQUAL(Image_width(img), 1);
     delete img;
@@ -89,7 +96,9 @@ TEST(Image_print) {
 
 TEST(set_pixel) {
     Image *img = new Image;
-    Image_init(img, 4, 3);
+    int width = 4;
+    int height = 3;
+    Image_init(img, width, height);
     Pixel color;
     color.r = 255;
     color.b = 255;
@@ -116,7 +125,9 @@ TEST(set_pixel) {
 
 TEST(Image_fill) {
     Image *img = new Image;
-    Image_init(img, 10, 7);
+    int width = 10;
+    int height = 7;
+    Image_init(img, width, height);
     Pixel color;
     color.r = 56;
     color.b = 26;
