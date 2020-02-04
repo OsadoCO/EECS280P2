@@ -140,17 +140,18 @@ void Matrix_fill(Matrix* mat, int value) {
 //           row or the first/last column.
 void Matrix_fill_border(Matrix* mat, int value) {
     
-    for(int i = 0; i < mat->height; i++) {
+    for(int row = 0; row < mat->height; row++) {
         //at row 0 and last row, all columns are set to value
-        if (i == 0 || i == mat->height - 1) {
-            for (int j = 0; j < mat -> width; j++) {
-                *Matrix_at(mat, i, j) = value;
+        if (row == 0 || row == mat->height - 1) {
+            for (int column = 0; column < mat -> width; column++) {
+                *Matrix_at(mat, row, column) = value;
             }
         } else {
             // every other row has the first and last element
             // of its column set to value
-            for (int j = 0; j < mat->width; j += mat->width - 1) {
-                *Matrix_at(mat, i, j) = value;
+            for (int column = 0; column < mat->width;
+                 column += mat->width - 1) {
+                *Matrix_at(mat, row, column) = value;
             }
         }
     }

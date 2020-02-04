@@ -84,10 +84,9 @@ TEST(Image_init_2) {
     color.r = 255;
     color.g = 219;
     color.b = 183;
-    ASSERT_TRUE(Pixel_equal(color, Image_get_pixel(img2, Image_height(img2) - 1, Image_width(img2) - 1)));
+    ASSERT_TRUE(Pixel_equal(color, Image_get_pixel(img2, Image_height(img2) - 1,
+                                                   Image_width(img2) - 1)));
     delete img;
-    //    delete img2;
-    //TODO: check values (last, first, a middle)
 }
 
 TEST(Image_print) {
@@ -121,6 +120,7 @@ TEST(set_pixel) {
     color.g = 100;
     Image_set_pixel(img, Image_height(img) - 1, Image_width(img) - 1, color);
     ASSERT_TRUE(Pixel_equal(color, Image_get_pixel(img2, 2, 3)));
+    delete img;
 }
 
 TEST(Image_fill) {
@@ -143,6 +143,7 @@ TEST(Image_fill) {
     ASSERT_FALSE(Pixel_equal(color, Image_get_pixel(img2, 1, 3)));
     Image_fill(img, color);
     ASSERT_TRUE(Pixel_equal(color, Image_get_pixel(img2, 1, 3)));
+    delete img;
 }
 // NOTE: The unit test framework tutorial in Lab 2 originally
 // had a semicolon after TEST_MAIN(). Although including and

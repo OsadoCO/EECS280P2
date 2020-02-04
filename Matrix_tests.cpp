@@ -93,7 +93,8 @@ TEST(test_fill){
     
 }
 
-//Test fill border, check that border is filled and not border parts are not filled
+//Test fill border, check that border is filled
+//and not border parts are not filled
 TEST(test_fill_border) {
     
     Matrix *mat = new Matrix;
@@ -103,7 +104,6 @@ TEST(test_fill_border) {
     Matrix_init(mat, width, height);
     Matrix_fill(mat, value);
     Matrix_fill_border(mat, 2);
-    
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             if (i == 0 || i == height - 1) {
@@ -164,7 +164,8 @@ TEST(test_max){
     ASSERT_EQUAL(Matrix_max(mat), 9);
     *Matrix_at(mat,(Matrix_height(mat) - 1),(Matrix_width(mat) - 1)) = 100;
     ASSERT_EQUAL(Matrix_max(mat), 100);
-    ASSERT_EQUAL(*Matrix_at(mat,(Matrix_height(mat) - 1),(Matrix_width(mat) - 1)),100);
+    ASSERT_EQUAL(*Matrix_at(mat,(Matrix_height(mat) - 1),
+                            (Matrix_width(mat) - 1)),100);
     delete mat;
 }
 
@@ -247,7 +248,6 @@ TEST(Matrix_at_tests) {
 }
 
 TEST(Matrix_at_const) {
-    
     Matrix *mat = new Matrix;
     int width = 1;
     int height = 1;
@@ -255,8 +255,7 @@ TEST(Matrix_at_const) {
     const Matrix *mat2 = mat;
     const int *ptr = mat2->data;
     ASSERT_EQUAL(Matrix_at(mat2,0,0),ptr);
-    ASSERT_EQUAL(*Matrix_at(mat2,0,0),
-                 *ptr);
+    ASSERT_EQUAL(*Matrix_at(mat2,0,0), *ptr);
     delete mat;
     
     width = 4;
@@ -265,8 +264,10 @@ TEST(Matrix_at_const) {
     Matrix_init(mat4, width, height);
     const Matrix *mat3 = mat4;
     ptr = mat3->data + 11;
-    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,Matrix_width(mat3) - 1),ptr);
-    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,Matrix_width(mat3) - 1),ptr);
+    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,
+                           Matrix_width(mat3) - 1),ptr);
+    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,
+                           Matrix_width(mat3) - 1),ptr);
     delete mat4;
 }
 
