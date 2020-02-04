@@ -79,7 +79,7 @@ TEST(test_fill){
     int width = 7;
     int height = 4;
     const int value = 76;
-    Matrix_init(mat, 7, 4);
+    Matrix_init(mat, width, height);
     //TODO: add more init tests here
     Matrix_fill(mat, value);
     
@@ -100,7 +100,7 @@ TEST(test_fill_border) {
     int width = 3;
     int height = 4;
     const int value = 5;
-    Matrix_init(mat, 3, 4);
+    Matrix_init(mat, width, height);
     Matrix_fill(mat, value);
     Matrix_fill_border(mat, 2);
     
