@@ -3,7 +3,7 @@
 #include "Matrix.h"
 #include "Matrix_test_helpers.h"
 #include "unit_test_framework.h"
-
+#include <sstream>
 using namespace std;
 
 
@@ -44,7 +44,23 @@ TEST(test_fill_basic) {
 }
 
 TEST(test_print) {
-    //write the test
+    Matrix *mat = new Matrix;
+    int width = 3;
+    int height = 3;
+    Matrix_init(mat, width, height);
+    int value = 2;
+    Matrix_fill(mat, value);
+    value = 0;
+    Matrix_fill_border(mat, value);
+    ostringstream expected;
+    ostringstream actual;
+    Matrix_print(mat, actual);
+    expected << "3 3\n" << "0 0 0 \n" << "0 2 0 \n" << "0 0 0 \n";
+    cout << expected.str() << endl;
+    cout << actual.str() << endl;
+    ASSERT_EQUAL(expected.str(), actual.str());
+    delete mat;
+    
 }
 
 TEST(test_init) {
@@ -135,7 +151,7 @@ TEST(test_fill_border) {
         }
     }
     delete mat1;
-
+    
 }
 
 //Test max where max is in different spots in data
@@ -225,25 +241,66 @@ TEST(one_row) {
     delete mat;
 }
 
-TEST(Matrix_at_tests) {
+TEST(Matrix_at) {
     Matrix *mat = new Matrix;
     int width = 1;
     int height = 1;
     Matrix_init(mat, width, height);
-    int *ptr = Matrix_at(mat, 0, 0);
-    ASSERT_EQUAL(ptr, mat->data);
-    
+    int row = 0;
+    int col = 0;
+    *Matrix_at(mat, row, col) = 5;
+    ostringstream expected;
+    ostringstream actual;
+    Matrix_print(mat, actual);
+    expected << "1 1\n5 \n";
+    ASSERT_EQUAL(expected.str(), actual.str());
     width = 3;
     height = 2;
+    int value = 7;
     Matrix_init(mat, width, height);
-    ptr = Matrix_at(mat, 1, 2);
-    ASSERT_EQUAL(ptr, mat->data + 5);
-    
-    width = 4;
-    height = 4;
+    Matrix_fill(mat, value);
+    value = 2;
+    for (int row = 0; row < Matrix_height(mat) / 2; row++) {
+        for (int col = 0; col < Matrix_width(mat) / 2; col++) {
+            *Matrix_at(mat, row, col) = value;
+            ASSERT_EQUAL( *Matrix_at(mat, row, col), value);
+            if (col != row) {
+                ASSERT_EQUAL(*Matrix_at(mat, col, row), 7);
+            }
+        }
+    }
+    delete mat;
+}
+
+TEST(Matrix_at_2) {
+    Matrix *mat = new Matrix;
+    int width = 4;
+    int height = 4;
+    int value = 3;
+    int row = 0;
+    int col = 0;
     Matrix_init(mat, width, height);
-    ptr = Matrix_at(mat, 2, 1);
-    ASSERT_EQUAL(ptr, mat->data + 9);
+    Matrix_fill(mat, value);
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    row = Matrix_height(mat) - 1;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    col = Matrix_width(mat) - 1;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    row = 0;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    col = 0;
+    *Matrix_at(mat, row, col) = 6;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 6);
+    col = 2;
+    row = 1;
+    *Matrix_at(mat, row, col) = 6;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 6);
+    row = Matrix_height(mat) - 1;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    col = Matrix_width(mat) - 1;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
+    row = 0;
+    ASSERT_EQUAL(*Matrix_at(mat, row, col), 3);
     delete mat;
 }
 
@@ -252,22 +309,24 @@ TEST(Matrix_at_const) {
     int width = 1;
     int height = 1;
     Matrix_init(mat, width, height);
+    Matrix_fill_border(mat, 8);
     const Matrix *mat2 = mat;
-    const int *ptr = mat2->data;
-    ASSERT_EQUAL(Matrix_at(mat2,0,0),ptr);
-    ASSERT_EQUAL(*Matrix_at(mat2,0,0), *ptr);
+    ASSERT_EQUAL(*Matrix_at(mat2,0,0), 8);
+    
     delete mat;
     
     width = 4;
     height = 3;
     Matrix *mat4 = new Matrix;
     Matrix_init(mat4, width, height);
+    int row = 2;
+    int col = 3;
+    Matrix_fill(mat4, 13);
     const Matrix *mat3 = mat4;
-    ptr = mat3->data + 11;
-    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,
-                           Matrix_width(mat3) - 1),ptr);
-    ASSERT_EQUAL(Matrix_at(mat3, Matrix_height(mat3) - 1,
-                           Matrix_width(mat3) - 1),ptr);
+    ASSERT_EQUAL(*Matrix_at(mat3, 0, 0), 13);
+    ASSERT_EQUAL(*Matrix_at(mat3, row, col), 13);
+    *Matrix_at(mat4, row, col) = 7;
+    ASSERT_EQUAL(*Matrix_at(mat3, row, col), 7);
     delete mat4;
 }
 
