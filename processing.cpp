@@ -202,27 +202,29 @@ void find_minimal_vertical_seam(const Matrix* cost, int seam[]) {
 // NOTE:     Use the new operator here to create the smaller Image,
 //           and then use delete when you are done with it.
 void remove_vertical_seam(Image *img, const int seam[]) {
-//    int newWidth = Image_height(img);
-//    if (newWidth >= Image_width(img)) {
-        Image *copy = new Image;
-        Image_init(copy, Image_width(img) - 1, Image_height(img));
-        bool hasNotFoundSeam = true;
-        for (int row = 0; row < Image_height(img); row++) {
-            for (int col = 0; col < Image_width(img) - 1; col++) {
-                if (col != seam[row] && hasNotFoundSeam) {
-                    Pixel copier = Image_get_pixel(img, row, col);
-                    Image_set_pixel(copy, row, col, copier);
-                }
-                else {
-                    hasNotFoundSeam = false;
-                    Pixel copier = Image_get_pixel(img, row, col + 1);
-                    Image_set_pixel(copy, row, col, copier);
-                }
+    Image *copy = new Image;
+    Image_init(copy, Image_width(img) - 1, Image_height(img));
+    bool hasNotFoundSeam = true;
+    for (int row = 0; row < Image_height(img); row++) {
+        for (int col = 0; col < Image_width(img) - 1; col++) {
+            if (col != seam[row] && hasNotFoundSeam) {
+                Pixel copier = Image_get_pixel(img, row, col);
+                Image_set_pixel(copy, row, col, copier);
+//                cout << "pixel being set for" << col << "col:" << copier.r << " " << copier.g << " " << copier.b << endl;
             }
-            hasNotFoundSeam = true;
+            else {
+                hasNotFoundSeam = false;
+                Pixel copier = Image_get_pixel(img, row, col + 1);
+                Image_set_pixel(copy, row, col, copier);
+//                cout << "pixel being set for" << col << "col:" << copier.r << " " << copier.g << " " << copier.b << endl;
+            }
         }
-        *img = *copy;
-//    }
+        hasNotFoundSeam = true;
+    }
+    //Image_print(copy,cout);
+    *img = *copy;
+    Image_print(img,cout);
+    delete copy;
 }
 
 // REQUIRES: img points to a valid Image
@@ -235,13 +237,21 @@ void remove_vertical_seam(Image *img, const int seam[]) {
 void seam_carve_width(Image *img, int newWidth) {
     
     assert(0 < newWidth && newWidth <= Image_width(img));
+    
     Matrix *energy = new Matrix;
-    compute_energy_matrix(img, energy);
     Matrix *cost = new Matrix;
-    compute_vertical_cost_matrix(energy, cost);
-    int seam[newWidth];
-    find_minimal_vertical_seam(cost, seam);
-    remove_vertical_seam(img, seam);
+    int seam[MAX_MATRIX_HEIGHT];
+    while (!(newWidth == Image_width(img))) {
+        compute_energy_matrix(img, energy);
+        compute_vertical_cost_matrix(energy, cost);
+        find_minimal_vertical_seam(cost, seam);
+//         The current problem is that the values of img on row 0 does not
+//        change after remove_vertical_seam has been called
+//        Image_print(img, cout);
+        remove_vertical_seam(img, seam);
+        Image_print(img, cout);
+    }
+    
     delete energy;
     delete cost;
 }
