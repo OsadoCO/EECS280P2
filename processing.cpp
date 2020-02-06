@@ -122,7 +122,7 @@ void compute_energy_matrix(const Image* img, Matrix* energy) {
 //           See the project spec for details on computing the cost matrix.
 void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
     Matrix_init(cost, Matrix_width(energy), Matrix_height(energy));
-    for (int column = 0; column < Matrix_width(cost) - 1; column++) {
+    for (int column = 0; column < Matrix_width(cost); column++) {
         *Matrix_at(cost, 0, column) = *Matrix_at(energy, 0, column);
     }
     
@@ -164,6 +164,8 @@ void compute_vertical_cost_matrix(const Matrix* energy, Matrix *cost) {
 //           with the bottom of the image and proceeding to the top,
 //           as described in the project spec.
 void find_minimal_vertical_seam(const Matrix* cost, int seam[]) {
+    
+    //TODO: add assertions
     //last is the column with minimum value in last row
     int last =
     Matrix_column_of_min_value_in_row
@@ -210,20 +212,16 @@ void remove_vertical_seam(Image *img, const int seam[]) {
             if (col != seam[row] && hasNotFoundSeam) {
                 Pixel copier = Image_get_pixel(img, row, col);
                 Image_set_pixel(copy, row, col, copier);
-//                cout << "pixel being set for" << col << "col:" << copier.r << " " << copier.g << " " << copier.b << endl;
             }
             else {
                 hasNotFoundSeam = false;
                 Pixel copier = Image_get_pixel(img, row, col + 1);
                 Image_set_pixel(copy, row, col, copier);
-//                cout << "pixel being set for" << col << "col:" << copier.r << " " << copier.g << " " << copier.b << endl;
             }
         }
         hasNotFoundSeam = true;
     }
-    //Image_print(copy,cout);
     *img = *copy;
-    Image_print(img,cout);
     delete copy;
 }
 
@@ -245,11 +243,7 @@ void seam_carve_width(Image *img, int newWidth) {
         compute_energy_matrix(img, energy);
         compute_vertical_cost_matrix(energy, cost);
         find_minimal_vertical_seam(cost, seam);
-//         The current problem is that the values of img on row 0 does not
-//        change after remove_vertical_seam has been called
-//        Image_print(img, cout);
         remove_vertical_seam(img, seam);
-        Image_print(img, cout);
     }
     
     delete energy;

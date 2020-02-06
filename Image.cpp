@@ -35,17 +35,13 @@ void Image_init(Image* img, int width, int height) {
 void Image_init(Image* img, std::istream& is) {
     string input;
     is >> input; // reads the P3
-    cout << input;
     is >> input; // reads width
-    cout << input;
     int width = stoi(input);
     img->width = width;
     is >> input; // reads height
-    cout << input;
     int height = stoi(input);
     img->height = height;
     is >> input; //reads 255;
-    cout << input;
     
     Matrix_init(&(img->red_channel), width, height);
     Matrix_init(&(img->green_channel), width, height);
@@ -54,10 +50,7 @@ void Image_init(Image* img, std::istream& is) {
     int row = 0;
     int column = 0;
     while (is >> input) {
-        if (row == 5) {
-        cout << input;
-        }
-        else if (count == 0) { //reading in red value
+        if (count == 0) { //reading in red value
             *Matrix_at(&(img->red_channel), row, column) = stoi(input);
             count++;
         }
